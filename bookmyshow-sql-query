@@ -103,6 +103,33 @@ CREATE TABLE Payments (
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
+-- Sample Users
+INSERT INTO Users (name, email, phone, password) VALUES
+('Amit Sharma', 'amit@example.com', '9876543210', 'password123'),
+('Priya Singh', 'priya@example.com', '8765432109', 'password456');
+
+-- Sample Movies
+INSERT INTO Movies (title, genre, duration, language, release_date) VALUES
+('Pathaan', 'Action', 150, 'Hindi', '2023-01-25'),
+('Avatar 2', 'Sci-Fi', 180, 'English', '2022-12-16');
+
+-- Sample Theatres
+INSERT INTO Theatres (name, location, total_screens) VALUES
+('PVR Cinemas', 'Delhi', 5),
+('INOX', 'Mumbai', 6);
+
+-- Sample Shows
+INSERT INTO Shows (movie_id, theatre_id, show_time, screen_number, ticket_price) VALUES
+(1, 1, '2024-04-15 18:00:00', 3, 250.00),
+(2, 2, '2024-04-16 20:00:00', 4, 300.00);
+
+-- Sample Seats
+INSERT INTO Seats (show_id, seat_number, status) VALUES
+(1, 'A1', 'Available'),
+(1, 'A2', 'Available'),
+(2, 'B1', 'Available'),
+(2, 'B2', 'Booked');
+
 -- Sample Booking
 INSERT INTO Bookings (user_id, show_id, seat_id, total_amount, status) VALUES
 (1, 1, 1, 250.00, 'Confirmed');
@@ -110,4 +137,27 @@ INSERT INTO Bookings (user_id, show_id, seat_id, total_amount, status) VALUES
 -- Sample Payment
 INSERT INTO Payments (booking_id, user_id, payment_status, payment_method, amount) VALUES
 (1, 1, 'Success', 'Credit Card', 250.00);
+
+
+## List of Available Movies
+SELECT movie_id, title, genre, duration, language, release_date 
+FROM Movies;
+
+
+## Available Shows for a Movie
+SELECT s.show_id, t.name AS theatre_name, s.show_time, s.screen_number, s.ticket_price 
+FROM Shows s 
+JOIN Theatres t ON s.theatre_id = t.theatre_id 
+WHERE s.movie_id = 1;
+
+
+## Check Available Seats for a Show
+SELECT seat_number, status FROM Seats WHERE show_id = 1;
+
+## Book a Seat
+UPDATE Seats SET status = 'Booked' WHERE seat_id = 1;
+ 
+##Cancel Booking
+UPDATE Bookings SET status = 'Cancelled' WHERE booking_id = 1;
+UPDATE Seats SET status = 'Available' WHERE seat_id = 1;
 
